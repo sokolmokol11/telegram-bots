@@ -1,4 +1,0 @@
-aiogram>=3.13,<4
-gspread>=6,<7
-tzdata
-aiohttp-socks>=0.8
