@@ -30,20 +30,23 @@ Telegram-бот, который 24/7 отвечает клиентам как ж
 
 ## Нейросеть
 
-По умолчанию — **Groq**: бесплатный тариф без карты, модель llama-3.3-70b.
-1. Зарегистрируйтесь на https://console.groq.com и создайте ключ (API Keys)
-2. Впишите его в `.env` → `AI_API_KEY=`
+По умолчанию — **GigaChat** от Сбера: работает из России, у физлиц бесплатный режим
+на 12 месяцев (сотни миллионов токенов — для бота с запасом).
+1. Зайдите на https://developers.sber.ru, войдите через Сбер ID и создайте проект GigaChat API
+2. Скопируйте **Ключ авторизации** в `.env` → `AI_API_KEY=`
+3. Рядом с ботом должен лежать сертификат НУЦ Минцифры `russian_trusted_root_ca.crt` —
+   скрипт `install.sh` скачивает его сам
 
-Подходит любая нейросеть с OpenAI-совместимым API (DeepSeek, OpenRouter, OpenAI…):
-меняются только `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`. Примеры — в `.env.example`.
+Можно подключить любую нейросеть с OpenAI-совместимым API (DeepSeek, OpenRouter…):
+`AI_PROVIDER=openai` и свои `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`. Примеры — в `.env.example`.
 
-Если сервер в России и нейросеть недоступна напрямую, бот ходит к ней через тот же
-прокси, что и к Telegram (`AI_USE_PROXY=1`).
+Для бота заказчика ключ GigaChat оформляется на заказчика (для ИП и компаний — свои тарифы,
+`AI_SCOPE=GIGACHAT_API_B2B`).
 
 ## Запуск
 
 1. `pip install -r requirements.txt`
-2. Скопируйте `.env.example` в `.env`, впишите `BOT_TOKEN` и `AI_API_KEY`
+2. Скопируйте `.env.example` в `.env`, впишите `BOT_TOKEN` и `AI_API_KEY` (ключ GigaChat)
 3. `python bot.py`
 4. `/myid` → впишите ID в `ADMIN_IDS` → перезапуск
 
@@ -58,4 +61,4 @@ Telegram-бот, который 24/7 отвечает клиентам как ж
 | `handlers/admin.py` | ответы менеджера клиентам, статистика |
 | `db.py` | история диалогов, статистика (SQLite) |
 
-Стек: Python, aiogram 3, OpenAI-совместимый API, SQLite.
+Стек: Python, aiogram 3, GigaChat / OpenAI-совместимый API, SQLite.

@@ -49,11 +49,16 @@ DEMO_CONTACT = os.getenv("DEMO_CONTACT", "").strip()
 BOT_KIND = "ИИ-консультант"
 DB_PATH = BASE_DIR / "ai_bot.db"
 
-# Нейросеть. По умолчанию Groq — бесплатный тариф, ключ: https://console.groq.com/keys
-AI_BASE_URL = os.getenv("AI_BASE_URL", "https://api.groq.com/openai/v1")
-AI_API_KEY = os.getenv("AI_API_KEY", "")
-AI_MODEL = os.getenv("AI_MODEL", "llama-3.3-70b-versatile")
-AI_USE_PROXY = os.getenv("AI_USE_PROXY", "1") == "1"  # ходить к нейросети через PROXY
+# Нейросеть. По умолчанию GigaChat (Сбер): работает из России, у физлиц бесплатный лимит на год.
+# AI_PROVIDER: gigachat — GigaChat; openai — любой OpenAI-совместимый API (DeepSeek, OpenRouter...)
+AI_PROVIDER = os.getenv("AI_PROVIDER", "gigachat").strip().lower()
+AI_API_KEY = os.getenv("AI_API_KEY", "").strip()
+AI_BASE_URL = os.getenv("AI_BASE_URL", "https://api.giga.chat/v1")
+AI_MODEL = os.getenv("AI_MODEL", "GigaChat-2")
+AI_SCOPE = os.getenv("AI_SCOPE", "GIGACHAT_API_PERS")  # для физлиц; для ИП/юрлиц — GIGACHAT_API_B2B
+AI_USE_PROXY = os.getenv("AI_USE_PROXY", "0") == "1"  # 1 — ходить к нейросети через PROXY
+# Сертификат НУЦ Минцифры (нужен для GigaChat), лежит рядом с ботом
+AI_CA_FILE = BASE_DIR / "russian_trusted_root_ca.crt"
 
 DAILY_LIMIT = int(os.getenv("DAILY_LIMIT", "30"))  # вопросов к ИИ на одного человека в день
 HISTORY_SIZE = 8  # сколько последних сообщений диалога помнит ИИ
